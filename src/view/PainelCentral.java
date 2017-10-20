@@ -3,22 +3,24 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
-import java.io.IOException;
 
-import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.swing.JTextPane;
 
 import controller.TerminalEvent;
 import controller.TerminalListener;
+import model.Terminal;
 
 public class PainelCentral implements TerminalListener {
 
 	private JFrame janela;
 	private JPanel painelPrincipal;
-	private JTextPane console;
+	private JTextArea console;
+	
+	public PainelCentral() {
+		montarJanela();
+	}
 	
 	public void montarJanela() {
 		prepararJanela();
@@ -28,19 +30,12 @@ public class PainelCentral implements TerminalListener {
 	}
 	
 	private void prepararConsole() {
-		console = new JTextPane();
-//		console.setBackground(Color.BLACK);
-//		console.setFont(new Font("Comic Sans", Font.PLAIN, 14));
+		console = new JTextArea();
+		console.setBackground(Color.BLACK);
+		console.setFont(new Font("Comic Sans", Font.BOLD, 14));
 		
-		
-//		console.setForeground(Color.RED);
-		
-		//console.setText("Olá galera do busú");
-		
-//		console.setForeground(Color.BLUE);
-//		@SuppressWarnings
-//		console.setContentType("text/html");
-		console.setText("<a color='blue'>Olaar</a>");
+		console.setForeground(Color.RED);
+
 		painelPrincipal.add(BorderLayout.CENTER, console);
 	}
 
@@ -51,7 +46,8 @@ public class PainelCentral implements TerminalListener {
 	}
 
 	private void exibirJanela() {
-		janela.setSize(500, 500);
+		janela.setSize(600, 200);
+		janela.setLocation(0, 300);
 		janela.setVisible(true);
 	}
 
@@ -62,7 +58,16 @@ public class PainelCentral implements TerminalListener {
 
 	@Override
 	public void atualizarPassagens(TerminalEvent t) {
-		// TODO Auto-generated method stub
+		Terminal terminal = (Terminal) t.getSource();
+		Character situacao[] = terminal.getBus().getBus();
+		console.setText("");
+		
+		for (int i = 0; i < situacao.length; i++) {
+			String novo = (i+1) + "-" +situacao[i];
+			console.setText(console.getText() + "\t" + novo);
+			if ((i+1) % 5 == 0)
+				console.setText(console.getText() + "\n");
+		}
 	}
 
 }

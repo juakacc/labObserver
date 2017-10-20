@@ -1,32 +1,89 @@
 package view;
 
-import java.util.Map;
-import java.util.Set;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
 
-import controller.Terminal;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+
 import controller.TerminalEvent;
 import controller.TerminalListener;
+import model.Terminal;
 
 public class Quiosque implements TerminalListener {
+
+	private JFrame janela;
+	private JPanel painelPrincipal;
+	private JTextArea console;
+	
+	public Quiosque() {
+		montarJanela();
+	}
+	
+	public void montarJanela() {
+		prepararJanela();
+		prepararPainel();
+		prepararConsole();
+		exibirJanela();
+	}
+	
+	private void prepararConsole() {
+		console = new JTextArea();
+		console.setBackground(Color.BLACK);
+		console.setFont(new Font("Comic Sans", Font.BOLD, 14));
+		
+		
+//		console.setForeground(Color.RED);
+		
+		//console.setText("Olá galera do busú");
+		
+		console.setForeground(Color.BLUE);
+		
+		painelPrincipal.add(BorderLayout.CENTER, console);
+	}
+
+	private void exibirJanela() {
+		janela.setSize(600, 200);
+		janela.setVisible(true);
+	}
+
+	private void prepararPainel() {
+		painelPrincipal = new JPanel(new BorderLayout());
+		painelPrincipal.setBackground(Color.BLACK);
+		janela.setContentPane(painelPrincipal);
+	}
+
+	private void prepararJanela() {
+		janela = new JFrame("Quiosque");
+		janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
 
 	@Override
 	public void atualizarPassagens(TerminalEvent t) {
 		Terminal terminal = (Terminal) t.getSource();
-		Map<Integer, Character> situacao = terminal.getBus().getBus();
-		Set<Integer> keySet = situacao.keySet();
+		Character situacao[] = terminal.getBus().getBus();
+				
+		console.setText("");
 		
 		menu();
 		
-		for (Integer integer : keySet) {
-			System.out.println(integer + " -> " +situacao.get(integer));
+		for (int i = 0; i < situacao.length; i++) {
+			String novo = (i+1) + "-" +situacao[i];
+			console.setText(console.getText() + "\t" + novo);
+			if ((i+1) % 5 == 0)
+				console.setText(console.getText() + "\n");
 		}
 	}
 	
 	private void menu() {
-		System.out.println("-----------------");
-		System.out.println("| V - Vago      |");
-		System.out.println("| R - Reservado |");
-		System.out.println("| O - Ocupado   |");
-		System.out.println("-----------------");
+		StringBuilder str = new StringBuilder();
+		str.append("------------------------------------------------------\n");
+		str.append("| V - Vago | ");
+		str.append("R - Reservado | ");
+		str.append("O - Ocupado |\n");
+		str.append("------------------------------------------------------\n");
+		console.setText(str.toString());
 	}
 }

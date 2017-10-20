@@ -1,37 +1,50 @@
 package model;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class Onibus {
 	
-	private Map<Integer, Character> acentos;
-	private int index;
+	private Character[] acentos;
+	
+	private int capacidade;
 	
 	public Onibus() {
-		this.acentos = new HashMap<>();
-		for (int i = 1; i <= 20; i++) {
-			this.acentos.put(i, 'V');
+		this.capacidade = 20;
+		this.acentos = new Character[capacidade];
+		
+		for (int i = 0; i < capacidade; i++) {
+			acentos[i] = '-';
 		}
-		this.index = 1;
+	}
+		
+	public int adicionar() throws OnibusCheioException {
+		
+		for (int i = 0; i < capacidade; i++) {
+			if (this.acentos[i] == '-') {
+				acentos[i] = 'O';
+				return i;
+			}
+		}
+		throw new OnibusCheioException();
 	}
 	
-	
-	public Integer adicionar() {
-		this.acentos.put(index, 'O');
-		int aux = index;
-		index++;
-		return aux;
+	public int reservar() throws OnibusCheioException {
+		for (int i = 0; i < capacidade; i++) {
+			if (this.acentos[i] == '-') {
+				acentos[i] = 'R';
+				return i;
+			}
+		}
+		throw new OnibusCheioException();
 	}
 	
-	public Integer reservar() {
-		this.acentos.put(index, 'R');
-		int aux = index;
-		index++;
-		return aux;
+	public void liberar(int i) {
+		acentos[i] = '-';
 	}
 	
-	public Map<Integer, Character> getBus() {
-		return new HashMap<>(acentos);
+	public Character[] getBus() {
+		return acentos;
+	}
+	
+	public int getCapacidade() {
+		return capacidade;
 	}
 }

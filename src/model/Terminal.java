@@ -1,9 +1,10 @@
-package controller;
+package model;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import model.Onibus;
+import controller.TerminalEvent;
+import controller.TerminalListener;
 
 public class Terminal {
 	
@@ -23,7 +24,7 @@ public class Terminal {
 		this.listeners.remove(t);
 	}
 
-	private void OnibusAlterou() {
+	private void onibusAlterou() {
 		TerminalEvent e = new TerminalEvent(this);
 		
 		for (TerminalListener terminalListener : listeners) {
@@ -31,17 +32,28 @@ public class Terminal {
 		}
 	}
 
-	public void venderPassagem() {
-		System.out.println("Seu acento é o: " + this.bus.adicionar());
-		OnibusAlterou();
+	public int venderPassagem() throws OnibusCheioException {
+		int a = this.bus.adicionar();
+		onibusAlterou();
+		return a;
 	}
 	
 	public Onibus getBus() {
 		return this.bus;
 	}
 
-	public void reservarPassagem() {
-		System.out.println("Sua reserva é: " + this.bus.reservar());
-		OnibusAlterou();
+	public int reservarPassagem() throws OnibusCheioException {
+		int a = this.bus.reservar();
+		onibusAlterou();
+		return a;
+	}
+	
+	public boolean cancelarPassagem(int i) {
+		if (i >= 0 && i <= this.bus.getCapacidade()) {
+			this.bus.liberar(i);
+			onibusAlterou();
+			return true;
+		}
+		return false;
 	}
 }
