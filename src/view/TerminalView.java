@@ -72,7 +72,8 @@ public class TerminalView {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					int in = Integer.parseInt(index.getText());
-					msg.setText("" + terminal.cancelarPassagem(in-1));
+					terminal.cancelarPassagem(in-1);
+					msg.setText("Cancelado...");
 				} catch (Exception ex) {}
 			}
 		});

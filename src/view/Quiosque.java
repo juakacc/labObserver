@@ -33,14 +33,7 @@ public class Quiosque implements TerminalListener {
 		console = new JTextArea();
 		console.setBackground(Color.BLACK);
 		console.setFont(new Font("Comic Sans", Font.BOLD, 14));
-		
-		
-//		console.setForeground(Color.RED);
-		
-		//console.setText("Olá galera do busú");
-		
-		console.setForeground(Color.BLUE);
-		
+		console.setForeground(Color.WHITE);
 		painelPrincipal.add(BorderLayout.CENTER, console);
 	}
 
@@ -64,14 +57,12 @@ public class Quiosque implements TerminalListener {
 	public void atualizarPassagens(TerminalEvent t) {
 		Terminal terminal = (Terminal) t.getSource();
 		Character situacao[] = terminal.getBus().getBus();
-				
 		console.setText("");
-		
 		menu();
 		
 		for (int i = 0; i < situacao.length; i++) {
 			String novo = (i+1) + "-" +situacao[i];
-			console.setText(console.getText() + "\t" + novo);
+			console.setText(console.getText() + " " + novo + "\t");
 			if ((i+1) % 5 == 0)
 				console.setText(console.getText() + "\n");
 		}
@@ -79,11 +70,11 @@ public class Quiosque implements TerminalListener {
 	
 	private void menu() {
 		StringBuilder str = new StringBuilder();
-		str.append("------------------------------------------------------\n");
-		str.append("| V - Vago | ");
+		str.append("---------------------------------------------------------------------\n");
+		str.append("QUIOSQUE | V - Vago | ");
 		str.append("R - Reservado | ");
 		str.append("O - Ocupado |\n");
-		str.append("------------------------------------------------------\n");
+		str.append("---------------------------------------------------------------------\n");
 		console.setText(str.toString());
 	}
 }

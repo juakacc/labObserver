@@ -4,9 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 
+import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 
 import controller.TerminalEvent;
 import controller.TerminalListener;
@@ -16,10 +16,12 @@ public class PainelCentral implements TerminalListener {
 
 	private JFrame janela;
 	private JPanel painelPrincipal;
-	private JTextArea console;
+	private JEditorPane console;
+	private StringBuilder texto;
 	
 	public PainelCentral() {
 		montarJanela();
+		this.texto = new StringBuilder();
 	}
 	
 	public void montarJanela() {
@@ -30,12 +32,11 @@ public class PainelCentral implements TerminalListener {
 	}
 	
 	private void prepararConsole() {
-		console = new JTextArea();
+		console = new JEditorPane();
 		console.setBackground(Color.BLACK);
 		console.setFont(new Font("Comic Sans", Font.BOLD, 14));
 		
-		console.setForeground(Color.RED);
-
+		console.setContentType("text/html");
 		painelPrincipal.add(BorderLayout.CENTER, console);
 	}
 
@@ -60,14 +61,35 @@ public class PainelCentral implements TerminalListener {
 	public void atualizarPassagens(TerminalEvent t) {
 		Terminal terminal = (Terminal) t.getSource();
 		Character situacao[] = terminal.getBus().getBus();
-		console.setText("");
+		menu();
 		
 		for (int i = 0; i < situacao.length; i++) {
-			String novo = (i+1) + "-" +situacao[i];
-			console.setText(console.getText() + "\t" + novo);
+			String novo = (i+1) + "-" + situacao[i];
+			switch (situacao[i]) {
+			case '-':
+				texto.append("<b color='green'>" + novo + "</b>&nbsp;");
+				break;
+			case 'R':
+				texto.append("<b color='yellow'>" + novo + "</b>&nbsp;");
+				break;
+			default:
+				texto.append("<b color='red'>" + novo + "</b>&nbsp;");
+				break;
+			}
 			if ((i+1) % 5 == 0)
-				console.setText(console.getText() + "\n");
+				texto.append("<br>");
 		}
+		console.setText(texto.toString());
+	}
+	
+	private void menu() {
+		texto = new StringBuilder();
+		texto.append("<b color='white'>-----------------------------------------------------------------------------</b><br>");
+		texto.append("<b color='white'>PAINEL CENTRAL</b> | ");
+		texto.append("<b color='green'>V - Vago</b> | ");
+		texto.append("<b color='yellow'>R - Reservado</b> | ");
+		texto.append("<b color='red'>O - Ocupado</b><br>");
+		texto.append("<b color='white'>-----------------------------------------------------------------------------</b><br>");
 	}
 
 }

@@ -1,9 +1,12 @@
 package model;
 
+/**
+ * Classe responsável por representar um ônibus
+ * @author juaka, Patrick
+ */
 public class Onibus {
 	
 	private Character[] acentos;
-	
 	private int capacidade;
 	
 	public Onibus() {
