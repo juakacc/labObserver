@@ -1,11 +1,11 @@
-package controller;
+package model;
 
 import java.util.EventObject;
 
 public class TerminalEvent extends EventObject {
 
-	public TerminalEvent(Object arg0) {
-		super(arg0);
+	public TerminalEvent(Object obj) {
+		super(obj);
 	}
 
 	/**

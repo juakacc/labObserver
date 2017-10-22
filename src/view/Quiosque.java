@@ -8,10 +8,16 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-import controller.TerminalEvent;
-import controller.TerminalListener;
-import model.Terminal;
+import controller.Terminal;
+import model.TerminalEvent;
+import model.TerminalListener;
 
+/**
+ * Classe responsável por representar a tela do quiosque
+ * @see TerminalListener
+ * @author juaka, Patrick
+ *
+ */
 public class Quiosque implements TerminalListener {
 
 	private JFrame janela;
@@ -56,7 +62,7 @@ public class Quiosque implements TerminalListener {
 	@Override
 	public void atualizarPassagens(TerminalEvent t) {
 		Terminal terminal = (Terminal) t.getSource();
-		Character situacao[] = terminal.getBus().getBus();
+		Character situacao[] = terminal.getOnibus().getAcentos();
 		console.setText("");
 		menu();
 		

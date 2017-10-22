@@ -10,27 +10,28 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import model.OnibusCheioException;
-import model.Terminal;
+import controller.Terminal;
+import model.OnibusException;
 
+/**
+ * Classe responsável por representar o terminal de venda da rodoviária
+ * @author juaka, Patrick
+ *
+ */
 public class TerminalView {
 
 	private JFrame janela;
 	private JPanel painelPrincipal;
-	private JButton btn_comprar;
-	private JButton btn_reservar;
-	private JTextField index;
-	private JButton btn_cancelar;
-	private JTextField msg;
+	private JButton btn_comprar, btn_reservar, btn_cancelar;
+	private JTextField txt_index, txt_msg;
 	
 	private Terminal terminal;
 	
 	public TerminalView(Terminal terminal) {
-		montarJanela();
 		this.terminal = terminal;
 	}
 
-	private void montarJanela() {
+	public void montarTela() {
 		prepararJanela();
 		prepararBotoes();
 		mostrarJanela();
@@ -45,9 +46,9 @@ public class TerminalView {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 					int acento = terminal.venderPassagem();
-					msg.setText("Seu acento é o: " + (acento+1));
-				} catch (OnibusCheioException e) {
-					msg.setText("Ônibus cheio... :(");
+					txt_msg.setText("Seu acento é o: " + (acento+1));
+				} catch (OnibusException e) {
+					txt_msg.setText(e.getMessage());
 				}
 				
 			}
@@ -56,12 +57,12 @@ public class TerminalView {
 		btn_reservar = new JButton("Reservar");
 		btn_reservar.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent arg) {
 				try {
 					int acento = terminal.reservarPassagem();
-					msg.setText("Sua reserva é: " + (acento+1));
-				} catch (OnibusCheioException e1) {
-					msg.setText("Õnibus cheio... :(");
+					txt_msg.setText("Sua reserva é: " + (acento+1));
+				} catch (OnibusException e) {
+					txt_msg.setText(e.getMessage());
 				}
 			}
 		});
@@ -71,31 +72,31 @@ public class TerminalView {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					int in = Integer.parseInt(index.getText());
-					terminal.cancelarPassagem(in-1);
-					msg.setText("Cancelado...");
+					int in = Integer.parseInt(txt_index.getText());
+					if (terminal.cancelarPassagem(in-1))
+						txt_msg.setText("Cancelado...");	
 				} catch (Exception ex) {}
 			}
 		});
 		
-		index = new JTextField();
+		txt_index = new JTextField();
 		
 		painelBotoes.add(btn_comprar);
 		painelBotoes.add(btn_reservar);
 		painelBotoes.add(btn_cancelar);
-		painelBotoes.add(index);
+		painelBotoes.add(txt_index);
 		
 		painelPrincipal.add(painelBotoes, BorderLayout.NORTH);
 		
-		msg = new JTextField();
-		msg.setEditable(false);
+		txt_msg = new JTextField();
+		txt_msg.setEditable(false);
 		
-		painelPrincipal.add(msg, BorderLayout.SOUTH);
+		painelPrincipal.add(txt_msg, BorderLayout.SOUTH);
 	}
 
 	private void mostrarJanela() {
 		janela.setSize(600, 150);
-		janela.setLocation(0, 600);
+		janela.setLocation(0, 500);
 		janela.setVisible(true);
 	}
 

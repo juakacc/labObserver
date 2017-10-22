@@ -17,8 +17,13 @@ public class Onibus {
 			acentos[i] = '-';
 		}
 	}
-		
-	public int adicionar() throws OnibusCheioException {
+	
+	/**
+	 * Adiciona um passageiro ao ônibus
+	 * @return O acento ocupado pelo passageiro
+	 * @throws OnibusException Caso o ônibus esteja cheio.
+	 */
+	public int adicionar() throws OnibusException {
 		
 		for (int i = 0; i < capacidade; i++) {
 			if (this.acentos[i] == '-') {
@@ -26,27 +31,44 @@ public class Onibus {
 				return i;
 			}
 		}
-		throw new OnibusCheioException();
+		throw new OnibusException("Ônibus cheio");
 	}
 	
-	public int reservar() throws OnibusCheioException {
+	/**
+	 * Reserva um acento para o passageiro
+	 * @return O acento reservado para o passageiro
+	 * @throws OnibusException Caso o ônibus esteja cheio.
+	 */
+	public int reservar() throws OnibusException {
 		for (int i = 0; i < capacidade; i++) {
 			if (this.acentos[i] == '-') {
 				acentos[i] = 'R';
 				return i;
 			}
 		}
-		throw new OnibusCheioException();
+		throw new OnibusException("Ônibus cheio");
 	}
 	
+	/**
+	 * Cancela a compra/reserva de um acento
+	 * @param i Acento a ser liberado
+	 */
 	public void liberar(int i) {
 		acentos[i] = '-';
 	}
 	
-	public Character[] getBus() {
+	/**
+	 * Recupera a situação dos acentos do ônibus
+	 * @return
+	 */
+	public Character[] getAcentos() {
 		return acentos;
 	}
 	
+	/**
+	 * Recupera a capacidade de passageiros do ônibus
+	 * @return
+	 */
 	public int getCapacidade() {
 		return capacidade;
 	}
